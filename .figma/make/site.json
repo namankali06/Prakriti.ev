@@ -1,0 +1,10 @@
+{
+  "description": "This mobile-first web application offers users an intuitive platform for seamless navigation and enhanced accessibility, ensuring a superior user experience on all devices.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
