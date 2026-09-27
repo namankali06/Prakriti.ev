@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface RoundCarouselImage {
   src: string;
@@ -59,6 +59,7 @@ export default function RoundCarousel({
   const velRef = useRef(0);
   const lastRef = useRef(0);
   const dragRef = useRef({ active: false, x: 0 });
+  const [currentRot, setCurrentRot] = useState(0);
 
   const angle = 360 / count;
   const factor = 1 + spacing * 0.15;
@@ -69,8 +70,10 @@ export default function RoundCarousel({
   useEffect(() => {
     const ring = ringRef.current;
     if (!ring) return;
-    const apply = () =>
-      (ring.style.transform = `translateZ(${-radius}px) rotateY(${rotYRef.current}deg)`);
+    const apply = () => {
+      ring.style.transform = `translateZ(${-radius}px) rotateY(${rotYRef.current}deg)`;
+      setCurrentRot(rotYRef.current);
+    };
     apply();
 
     const draw = (now: number) => {
@@ -121,6 +124,37 @@ export default function RoundCarousel({
     backfaceVisibility: "hidden",
     backgroundSize: "cover",
     backgroundPosition: "center",
+    transition: "filter 0.15s ease-out",
+  };
+
+  const getItemBlur = (itemIndex: number) => {
+    const itemAngle = itemIndex * angle;
+    let relativeRot = itemAngle - currentRot;
+    relativeRot = ((relativeRot % 360) + 360) % 360;
+    if (relativeRot > 180) relativeRot = 360 - relativeRot;
+    const maxBlur = 8;
+    const sharpThreshold = 25;
+    if (relativeRot <= sharpThreshold) return 0;
+    const progress = Math.min((relativeRot - sharpThreshold) / (90 - sharpThreshold), 1);
+    return maxBlur * progress;
+  };
+
+  const getItemOpacity = (itemIndex: number) => {
+    const itemAngle = itemIndex * angle;
+    let relativeRot = itemAngle - currentRot;
+    relativeRot = ((relativeRot % 360) + 360) % 360;
+    if (relativeRot > 180) relativeRot = 360 - relativeRot;
+    if (relativeRot <= 30) return 1;
+    return 0.6 + 0.4 * (1 - Math.min(relativeRot / 90, 1));
+  };
+
+  const getItemScale = (itemIndex: number) => {
+    const itemAngle = itemIndex * angle;
+    let relativeRot = itemAngle - currentRot;
+    relativeRot = ((relativeRot % 360) + 360) % 360;
+    if (relativeRot > 180) relativeRot = 360 - relativeRot;
+    if (relativeRot <= 20) return 1;
+    return 0.85 + 0.15 * (1 - Math.min(relativeRot / 90, 1));
   };
 
   return (
@@ -160,6 +194,9 @@ export default function RoundCarousel({
         >
           {items.map((img, i) => {
             const src = img?.src;
+            const blur = getItemBlur(i);
+            const opacity = getItemOpacity(i);
+            const scale = getItemScale(i);
             return (
               <div
                 key={i}
@@ -168,6 +205,8 @@ export default function RoundCarousel({
                   inset: 0,
                   transform: `rotateY(${i * angle}deg) translateZ(${radius}px)`,
                   transformStyle: "preserve-3d",
+                  opacity,
+                  transformOrigin: "center center",
                 }}
               >
                 <div
@@ -176,6 +215,8 @@ export default function RoundCarousel({
                     backgroundColor: src ? "transparent" : "#222",
                     backgroundImage: src ? `url(${src})` : undefined,
                     boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+                    filter: `blur(${blur}px) saturate(${1 - blur / 20}) brightness(${1 - blur / 30})`,
+                    transform: `scale(${scale})`,
                   }}
                 />
                 <div
@@ -184,7 +225,8 @@ export default function RoundCarousel({
                     transform: "rotateY(180deg)",
                     backgroundColor: src ? "transparent" : "#181818",
                     backgroundImage: src ? `url(${src})` : undefined,
-                    filter: `brightness(${innerDim / 10})`,
+                    filter: `brightness(${innerDim / 10}) blur(${blur}px)`,
+                    opacity: 1 - blur / 10,
                   }}
                 />
               </div>
