@@ -27,109 +27,66 @@ export default function ServiceSection() {
   const { ref, inView } = useInView(0.1)
 
   return (
-    <section
-      id="service"
-      style={{ background: "#F5F7F4", borderTop: "1px solid #E3E7E3" }}
-    >
+    <section id="service" className="section-secondary" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
       <div
         ref={ref}
-        className={`container-bb py-24 lg:py-32 transition-all duration-700 motion-safe:transition-all ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+        className={`container py-16 lg:py-24 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        {/* Header */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start mb-16 lg:mb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start mb-12 lg:mb-16">
           <div>
-            <div className="label-mono-green mb-6">Service & Support</div>
-            <h2
-              className="display-xl text-[#111111]"
-              style={{
-                fontSize: "clamp(2rem, 4vw, 4rem)",
-                lineHeight: 1.0,
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <div className="section-label-accent mb-4">Service & Support</div>
+            <h2 className="display-2xl">
               Supported<br />
-              for life.
+              <span className="text-gradient-accent">for life.</span>
             </h2>
           </div>
-          <div className="lg:pt-4">
-            <p
-              className="body-copy text-[#555B56]"
-              style={{ fontSize: "16px", lineHeight: 1.65, maxWidth: "400px" }}
-            >
-              A vehicle that earns must keep running. Prakriti's service infrastructure is built
-              to keep your vehicle operational — not just in the first year, but across its
-              entire working life.
+          <div className="lg:pt-2">
+            <p className="body-base text-neutral-400" style={{ maxWidth: "400px", lineHeight: 1.7 }}>
+              A vehicle that earns must keep running. Prakriti's service infrastructure is built to keep your vehicle operational — not just in the first year, but across its entire working life.
             </p>
           </div>
         </div>
 
-        {/* Service image */}
-        <div
-          className="relative overflow-hidden mb-16 lg:mb-20"
-          style={{ borderRadius: "6px" }}
-        >
-          <div style={{ aspectRatio: "16/7", minHeight: "200px" }}>
-            <img
-              src="/ev-manufacturing-india.png"
-              alt="Prakriti authorised service centre"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
+        <div className="relative overflow-hidden card mb-12 lg:mb-16" style={{ aspectRatio: "16/7" }}>
+          <img
+            src="/ev-service-center.png"
+            alt="Prakriti authorised service centre"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
           <div
             className="absolute bottom-0 left-0 right-0"
             style={{
-              background: "linear-gradient(to top, rgba(17,20,17,0.65) 0%, transparent 100%)",
+              background: "linear-gradient(to top, rgba(10,10,10,0.65) 0%, transparent 100%)",
               padding: "32px 28px 20px",
             }}
           >
-            <p className="label-mono" style={{ color: "rgba(255,255,255,0.7)", fontSize: "10px" }}>
+            <p className="label-xs" style={{ color: "rgba(255,255,255,0.6)" }}>
               Authorised Service · Prakriti Network
             </p>
           </div>
         </div>
 
-        {/* Service pillars — editorial rows */}
-        <div style={{ borderTop: "1px solid #D5D7D8" }}>
+        <div style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
           {SERVICE_PILLARS.map((item) => (
             <div
               key={item.number}
-              className="grid gap-4 sm:gap-8 py-8 items-baseline"
+              className="grid gap-4 sm:gap-6 py-6 items-baseline"
               style={{
-                gridTemplateColumns: "64px 1fr 2fr",
-                borderBottom: "1px solid #D5D7D8",
+                gridTemplateColumns: "56px 1fr 2fr",
+                borderBottom: "1px solid var(--color-border-subtle)",
               }}
             >
-              <span className="label-mono-green" style={{ fontSize: "11px" }}>
-                {item.number}
-              </span>
-              <h3
-                className="display-xl text-[#111111]"
-                style={{ fontSize: "18px", lineHeight: 1.2 }}
-              >
-                {item.title}
-              </h3>
-              <p
-                className="body-copy text-[#555B56]"
-                style={{ fontSize: "15px", lineHeight: 1.65 }}
-              >
+              <span className="label-xs-accent">{item.number}</span>
+              <h3 className="display-md">{item.title}</h3>
+              <p className="body-sm text-neutral-400" style={{ lineHeight: 1.7 }}>
                 {item.body}
               </p>
             </div>
           ))}
         </div>
 
-        {/* Warranty summary strip */}
-        <div
-          className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-0"
-          style={{
-            background: "#FFFFFF",
-            border: "1px solid #E3E7E3",
-            borderRadius: "6px",
-            overflow: "hidden",
-          }}
-        >
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-0 card overflow-hidden">
           {[
             { label: "Vehicle warranty", value: "3 Years" },
             { label: "Battery warranty", value: "8 Years" },
@@ -140,19 +97,14 @@ export default function ServiceSection() {
               key={w.label}
               style={{
                 padding: "24px",
-                borderRight: i < 3 ? "1px solid #E3E7E3" : "none",
-                borderBottom: i < 2 ? "1px solid #E3E7E3" : "none",
+                borderRight: i < 3 ? "1px solid var(--color-border-secondary)" : "none",
+                borderBottom: i < 2 ? "1px solid var(--color-border-secondary)" : "none",
               }}
             >
-              <div
-                className="display-xl text-[#111111] mb-1"
-                style={{ fontSize: "22px", lineHeight: 1.1 }}
-              >
+              <div className="display-lg mb-1">
                 {w.value}
               </div>
-              <div className="label-mono" style={{ fontSize: "10px" }}>
-                {w.label}
-              </div>
+              <div className="label-xs">{w.label}</div>
             </div>
           ))}
         </div>

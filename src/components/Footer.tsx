@@ -1,5 +1,5 @@
 const FOOTER_LINKS: Record<string, string[]> = {
-  Products: ["Big Bull Defender", "Big Bull Loader", "Big Bull Glider"],
+  Products: ["Big Bull Defender", "Big Bull Loader", "Big Bull Glider", "Big Bull Cruiser", "Big Bull Explorer", "Big Bull Phantom"],
   Business: ["Fleet Solutions", "Last-Mile Delivery", "Passenger Mobility", "Dealership Partnership"],
   Company: ["About Prakriti", "Manufacturing", "Careers", "Press"],
   Support: ["Customer Care", "Service Network", "Warranty", "Spare Parts"],
@@ -12,7 +12,7 @@ const SOCIAL = [
   },
   {
     name: "YouTube",
-    icon: "M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z",
+    icon: "M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z",
   },
   {
     name: "Instagram",
@@ -22,47 +22,27 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#111111", color: "white", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div className="container-bb">
-        <div
-          className="py-16 sm:py-20 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10"
-        >
-          {/* Brand column */}
+    <footer className="section-dark" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
+      <div className="container">
+        <div className="py-12 sm:py-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <span
-                className="display-xl text-white"
-                style={{ fontSize: "20px", letterSpacing: "-0.01em" }}
-              >
+            <div className="flex items-center gap-2 mb-4">
+              <span className="display-xl text-white" style={{ fontSize: "20px", letterSpacing: "-0.01em" }}>
                 PRAKRITI
               </span>
-              <span
-                className="label-mono text-white px-1.5 py-0.5"
-                style={{
-                  fontSize: "9px",
-                  background: "#1B8F3A",
-                  borderRadius: "2px",
-                  color: "#fff",
-                  letterSpacing: "0.06em",
-                }}
-              >
+              <span className="label-xs text-white px-2 py-1 rounded-md" style={{ background: "var(--color-accent-primary)" }}>
                 EV
               </span>
             </div>
-            <p
-              className="mb-6"
-              style={{ fontSize: "13px", lineHeight: 1.65, color: "rgba(255,255,255,0.45)", maxWidth: "240px" }}
-            >
-              Electric mobility built for India. Reliable, zero-emission commercial transport
-              for every road.
+            <p className="mb-4" style={{ fontSize: "13px", lineHeight: 1.65, color: "rgba(255,255,255,0.45)", maxWidth: "240px" }}>
+              Electric mobility built for India. Reliable, zero-emission commercial transport for every road.
             </p>
-            <div className="space-y-1 mb-6">
-              <p className="label-mono-green" style={{ fontSize: "10px" }}>Support</p>
+            <div className="space-y-1 mb-4">
+              <p className="label-xs-accent">Support</p>
               <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.65)" }}>
                 contact@bigbullev.in
               </p>
             </div>
-            {/* Social */}
             <div className="flex gap-2">
               {SOCIAL.map((s) => (
                 <a
@@ -74,7 +54,7 @@ export default function Footer() {
                     width: "32px",
                     height: "32px",
                     border: "1px solid rgba(255,255,255,0.12)",
-                    borderRadius: "4px",
+                    borderRadius: "var(--radius-md)",
                     color: "rgba(255,255,255,0.4)",
                   }}
                 >
@@ -86,11 +66,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Nav columns */}
           {Object.entries(FOOTER_LINKS).map(([heading, items]) => (
             <div key={heading} className="col-span-1">
-              <h4 className="label-mono-green mb-4" style={{ fontSize: "10px" }}>{heading}</h4>
-              <ul className="space-y-2.5">
+              <h4 className="label-xs-accent mb-3">{heading}</h4>
+              <ul className="space-y-2">
                 {items.map((item) => (
                   <li key={item}>
                     <a
@@ -107,17 +86,12 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
         <div
-          className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-          style={{
-            borderTop: "1px solid rgba(255,255,255,0.07)",
-            color: "rgba(255,255,255,0.3)",
-            fontSize: "12px",
-          }}
+          className="py-4 flex flex-col sm:flex-row items-center justify-between gap-3"
+          style={{ borderTop: "1px solid var(--color-border-subtle)", color: "rgba(255,255,255,0.3)", fontSize: "12px" }}
         >
           <p>&copy; {new Date().getFullYear()} Prakriti EV Private Limited. All rights reserved.</p>
-          <div className="flex gap-6">
+          <div className="flex gap-5">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
           </div>

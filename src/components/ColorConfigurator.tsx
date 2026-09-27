@@ -13,44 +13,30 @@ export default function ColorConfigurator() {
   }
 
   return (
-    <section
-      id="specifications"
-      className="bg-[#F5F7F4]"
-      style={{ borderTop: "1px solid #E3E7E3" }}
-    >
+    <section id="specifications" className="section-secondary" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
       <div
         ref={ref}
-        className={`container-bb py-24 lg:py-32 transition-all duration-700 motion-safe:transition-all ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`container py-16 lg:py-24 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        {/* Header */}
-        <div className="mb-14">
-          <div className="label-mono-green mb-5">Specifications</div>
+        <div className="mb-10">
+          <div className="section-label mb-4">Specifications</div>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <h2
-              className="display-xl text-[#111111]"
-              style={{ fontSize: "clamp(2rem, 4vw, 4rem)", lineHeight: 1.0, letterSpacing: "-0.02em" }}
-            >
+            <h2 className="display-2xl">
               Model<br />Specifications.
             </h2>
-            <p className="body-copy text-[#93939F]" style={{ fontSize: "15px", maxWidth: "240px" }}>
+            <p className="body-sm text-neutral-400" style={{ maxWidth: "240px" }}>
               Select a model to view its detailed capabilities.
             </p>
           </div>
         </div>
 
-        {/* Model switcher — simple text tabs */}
-        <div
-          className="flex gap-0 mb-12"
-          style={{ borderBottom: "1px solid #E3E7E3" }}
-        >
+        <div className="flex gap-0 mb-10" style={{ borderBottom: "1px solid var(--color-border-subtle)" }}>
           {PRODUCTS.map((p, i) => (
             <button
               key={p.id}
               onClick={() => selectModel(i)}
-              className={`py-3 px-6 text-[13px] font-medium transition-all duration-200 cursor-pointer relative ${
-                modelIdx === i ? "text-[#111111]" : "text-[#93939F] hover:text-[#555B56]"
+              className={`py-3 px-4 text-xs font-medium transition-all duration-200 cursor-pointer relative ${
+                modelIdx === i ? "text-white" : "text-neutral-500 hover:text-white"
               }`}
               style={{ background: "transparent", border: "none" }}
             >
@@ -58,54 +44,44 @@ export default function ColorConfigurator() {
               {modelIdx === i && (
                 <span
                   className="absolute bottom-0 left-0 right-0"
-                  style={{ height: "2px", background: "#1B8F3A" }}
+                  style={{ height: "2px", background: "var(--color-accent-primary)" }}
                 />
               )}
             </button>
           ))}
         </div>
 
-        {/* Main grid */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Vehicle render */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           <div className="relative">
             <div
-              className="relative overflow-hidden"
+              className="relative overflow-hidden card"
               style={{
-                background: "#FFFFFF",
-                borderRadius: "6px",
                 aspectRatio: "4/3",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 padding: "48px",
-                border: "1px solid #E3E7E3",
               }}
             >
               <img
                 key={product.id}
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-contain mix-blend-multiply"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
 
-          {/* Details panel */}
           <div>
-            <span className="label-mono-green block mb-2">{product.category}</span>
-            <h3
-              className="display-xl text-[#111111] mb-3"
-              style={{ fontSize: "clamp(1.5rem, 2vw, 2rem)", lineHeight: 1.05 }}
-            >
+            <span className="label-xs-accent block mb-2">{product.category}</span>
+            <h3 className="display-xl mb-3">
               {product.name}
             </h3>
-            <p className="body-copy text-[#555B56] mb-8" style={{ fontSize: "15px", lineHeight: 1.65 }}>
+            <p className="body-base text-neutral-400 mb-6">
               {product.description}
             </p>
 
-            {/* Specs */}
-            <div style={{ borderTop: "1px solid #E3E7E3", marginBottom: "32px" }}>
+            <div style={{ borderTop: "1px solid var(--color-border-subtle)", marginBottom: "24px" }}>
               {product.specs.map((spec) => (
                 <div key={spec.label} className="spec-row">
                   <span className="spec-label">{spec.label}</span>
@@ -118,14 +94,14 @@ export default function ColorConfigurator() {
               <a
                 href="#dealership"
                 className="btn btn-primary"
-                style={{ flex: 1, justifyContent: "center", fontSize: "14px" }}
+                style={{ flex: 1, justifyContent: "center", fontSize: "15px" }}
               >
                 Book Test Ride
               </a>
               <a
                 href={`/model/${product.id}`}
-                className="btn btn-outline"
-                style={{ flex: 1, justifyContent: "center", fontSize: "14px" }}
+                className="btn btn-secondary"
+                style={{ flex: 1, justifyContent: "center", fontSize: "15px" }}
               >
                 View Full Details
               </a>

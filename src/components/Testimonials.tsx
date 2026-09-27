@@ -9,22 +9,22 @@ const QUOTES = [
 export default function Testimonials() {
   const { ref, inView } = useInView(0.1)
   return (
-    <section id="testimonials" className="bg-[#F2F1EE] py-24 lg:py-32 border-t border-[#E5E7E8]">
-      <div ref={ref} className={`container-bb transition-all duration-700 motion-safe:transition-all ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-        <div className="section-label mb-6 w-fit">Operator Stories</div>
-        <h2 className="display-xl text-[clamp(32px,4vw,52px)] text-[#111111] mb-16">
+    <section id="testimonials" className="section-secondary py-16 lg:py-24" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
+      <div ref={ref} className={`container transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className="section-label-accent mb-4 w-fit">Operator Stories</div>
+        <h2 className="display-2xl mb-12">
           Real operators.<br />Real results.
         </h2>
-        <div className="border-t border-[#D5D7D8]">
+        <div style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
           {QUOTES.map((q) => (
-            <div key={q.name} className="grid sm:grid-cols-[1fr_1fr] lg:grid-cols-[2fr_1fr] gap-6 sm:gap-12 py-10 border-b border-[#D5D7D8] items-start">
+            <div key={q.name} className="grid sm:grid-cols-[1fr_1fr] lg:grid-cols-[2fr_1fr] gap-4 sm:gap-8 py-8 border-b items-start" style={{ borderColor: "var(--color-border-subtle)" }}>
               <blockquote>
-                <p className="display-xl text-[18px] sm:text-[20px] text-[#111111] leading-relaxed">&ldquo;{q.quote}&rdquo;</p>
+                <p className="display-md text-white leading-relaxed">&ldquo;{q.quote}&rdquo;</p>
               </blockquote>
               <div className="sm:text-right">
-                <p className="text-[14px] font-medium text-[#111111]">{q.name}</p>
-                <p className="text-[13px] text-[#5F6368] mt-1">{q.role}</p>
-                <p className="label-mono mt-2">{q.location}</p>
+                <p className="text-sm font-medium text-white">{q.name}</p>
+                <p className="text-sm text-neutral-400 mt-1">{q.role}</p>
+                <p className="label-xs mt-2">{q.location}</p>
               </div>
             </div>
           ))}

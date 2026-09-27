@@ -14,7 +14,7 @@ export default function Layout() {
   const openTestRide = () => setTestRideOpen(true)
 
   return (
-    <div className="overflow-x-hidden bg-white min-h-screen flex flex-col">
+    <div className="overflow-x-hidden section-dark min-h-screen flex flex-col">
       <Navbar onTestRide={openTestRide} />
       <main id="main-content" className="flex-1">
         <Outlet context={{ openTestRide } satisfies LayoutContextType} />

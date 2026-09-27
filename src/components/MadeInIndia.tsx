@@ -27,51 +27,28 @@ export default function MadeInIndia() {
   const { ref, inView } = useInView(0.1)
 
   return (
-    <section
-      id="manufacturing"
-      style={{ background: "#111111", borderTop: "1px solid rgba(255,255,255,0.06)" }}
-    >
+    <section id="manufacturing" className="section-dark" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
       <div
         ref={ref}
-        className={`container-bb py-24 lg:py-32 transition-all duration-700 motion-safe:transition-all ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`container py-16 lg:py-24 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        {/* Header */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start mb-16 lg:mb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start mb-12 lg:mb-16">
           <div>
-            <div
-              className="label-mono mb-6"
-              style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px", letterSpacing: "0.1em" }}
-            >
-              Manufacturing · India
-            </div>
-            <h2
-              className="display-xl text-white"
-              style={{ fontSize: "clamp(2rem, 4vw, 4rem)", lineHeight: 1.0, letterSpacing: "-0.02em" }}
-            >
+            <div className="section-label-accent mb-4">Manufacturing · India</div>
+            <h2 className="display-2xl">
               THE FACTORY.<br />
-              <span style={{ color: "#1B8F3A" }}>Built here.</span><br />
+              <span className="text-gradient-accent">Built here.</span><br />
               Ready for India.
             </h2>
           </div>
-          <div className="lg:pt-4">
-            <p
-              className="body-copy"
-              style={{ color: "rgba(255,255,255,0.55)", fontSize: "16px", lineHeight: 1.65 }}
-            >
-              Every Prakriti vehicle is assembled in India, by Indian engineers, using a supply
-              chain that supports local manufacturing. Tested against real Indian conditions
-              before any vehicle leaves the factory.
+          <div className="lg:pt-2">
+            <p className="body-base text-neutral-400" style={{ lineHeight: 1.7 }}>
+              Every Prakriti vehicle is assembled in India, by Indian engineers, using a supply chain that supports local manufacturing. Tested against real Indian conditions before any vehicle leaves the factory.
             </p>
           </div>
         </div>
 
-        {/* Factory image */}
-        <div
-          className="relative overflow-hidden mb-16 lg:mb-20"
-          style={{ borderRadius: "4px", aspectRatio: "16/7" }}
-        >
+        <div className="relative overflow-hidden card mb-12 lg:mb-16" style={{ aspectRatio: "16/7" }}>
           <img
             src="/ev-manufacturing-india.png"
             alt="Prakriti EV assembly — Indian manufacturing facility"
@@ -81,40 +58,29 @@ export default function MadeInIndia() {
           <div
             className="absolute bottom-0 left-0 right-0"
             style={{
-              background: "linear-gradient(to top, rgba(17,17,17,0.7) 0%, transparent 100%)",
+              background: "linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 100%)",
               padding: "32px 28px 20px",
             }}
           >
-            <p className="label-mono" style={{ color: "rgba(255,255,255,0.5)", fontSize: "10px" }}>
+            <p className="label-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
               Prakriti Manufacturing · Assembly Facility · India
             </p>
           </div>
         </div>
 
-        {/* Process rows */}
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+        <div style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
           {PROCESS.map((item) => (
             <div
               key={item.step}
-              className="grid gap-4 sm:gap-8 py-8 items-baseline"
+              className="grid gap-4 sm:gap-6 py-6 items-baseline"
               style={{
-                gridTemplateColumns: "72px 1fr 2fr",
-                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                gridTemplateColumns: "64px 1fr 2fr",
+                borderBottom: "1px solid var(--color-border-subtle)",
               }}
             >
-              <span
-                className="label-mono"
-                style={{ color: "#1B8F3A", fontSize: "11px", letterSpacing: "0.08em" }}
-              >
-                {item.step}
-              </span>
-              <h3 className="display-xl text-white" style={{ fontSize: "18px", lineHeight: 1.2 }}>
-                {item.title}
-              </h3>
-              <p
-                className="body-copy"
-                style={{ color: "rgba(255,255,255,0.55)", fontSize: "15px", lineHeight: 1.65 }}
-              >
+              <span className="label-xs-accent">{item.step}</span>
+              <h3 className="display-md">{item.title}</h3>
+              <p className="body-sm text-neutral-400" style={{ lineHeight: 1.7 }}>
                 {item.body}
               </p>
             </div>

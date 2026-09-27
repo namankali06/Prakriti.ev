@@ -31,41 +31,22 @@ export default function Blog() {
   const { ref, inView } = useInView()
 
   return (
-    <section
-      id="stories"
-      style={{ background: "#111111", borderTop: "1px solid rgba(255,255,255,0.06)" }}
-    >
+    <section id="stories" className="section-dark" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
       <div
         ref={ref}
-        className={`container-bb py-24 lg:py-32 transition-all duration-700 motion-safe:transition-all ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`container py-16 lg:py-24 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
-            <div
-              className="label-mono mb-5"
-              style={{ color: "#1B8F3A", fontSize: "11px", letterSpacing: "0.1em" }}
-            >
-              Stories
-            </div>
-            <h2
-              className="display-xl text-white"
-              style={{
-                fontSize: "clamp(1.8rem, 4vw, 3.5rem)",
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <div className="section-label-accent mb-4">Stories</div>
+            <h2 className="display-2xl">
               From the world<br />
               of Prakriti.
             </h2>
           </div>
           <a
             href="#"
-            className="label-mono flex items-center gap-2 hover:text-white transition-colors group"
-            style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px", letterSpacing: "0.1em" }}
+            className="label-xs-accent flex items-center gap-2 hover:text-white transition-colors group"
           >
             ALL STORIES
             <svg
@@ -79,26 +60,20 @@ export default function Blog() {
           </a>
         </div>
 
-        {/* Posts — 3-column editorial grid */}
-        <div
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
-        >
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
           {POSTS.map((post, i) => (
             <a
               key={post.title}
               href="#"
-              className="group flex flex-col overflow-hidden"
+              className="group flex flex-col overflow-hidden card"
               style={{
-                borderRight:
-                  i < POSTS.length - 1 ? "1px solid rgba(255,255,255,0.08)" : "none",
-                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                borderRight: i < POSTS.length - 1 ? "1px solid var(--color-border-subtle)" : "none",
+                borderBottom: "1px solid var(--color-border-subtle)",
               }}
             >
-              {/* Image */}
               <div
                 className="overflow-hidden"
-                style={{ aspectRatio: "16/10", background: "#0d0d0d" }}
+                style={{ aspectRatio: "16/10", background: "var(--color-bg-tertiary)" }}
               >
                 <img
                   src={post.image}
@@ -109,47 +84,23 @@ export default function Blog() {
                 />
               </div>
 
-              {/* Content */}
-              <div
-                className="flex flex-col flex-1"
-                style={{ padding: "28px 0" }}
-              >
-                <div
-                  className="label-mono mb-3"
-                  style={{ color: "#1B8F3A", fontSize: "10px", letterSpacing: "0.1em" }}
-                >
-                  {post.category}
-                </div>
-                <h3
-                  className="display-xl text-white mb-3 group-hover:text-[#1B8F3A] transition-colors"
-                  style={{ fontSize: "17px", lineHeight: 1.25, letterSpacing: "-0.01em" }}
-                >
+              <div className="flex flex-col flex-1" style={{ padding: "24px" }}>
+                <div className="label-xs-accent mb-2">{post.category}</div>
+                <h3 className="display-md text-white mb-2 group-hover:text-[var(--color-accent-primary)] transition-colors">
                   {post.title}
                 </h3>
-                <p
-                  className="body-copy flex-1 mb-5"
-                  style={{ fontSize: "14px", color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}
-                >
+                <p className="body-sm text-neutral-400 flex-1 mb-4" style={{ lineHeight: 1.6 }}>
                   {post.excerpt}
                 </p>
-                <div
-                  className="flex items-center justify-between"
-                  style={{
-                    borderTop: "1px solid rgba(255,255,255,0.08)",
-                    paddingTop: "16px",
-                  }}
-                >
-                  <span
-                    className="label-mono"
-                    style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)" }}
-                  >
+                <div className="flex items-center justify-between" style={{ borderTop: "1px solid var(--color-border-subtle)", paddingTop: "16px" }}>
+                  <span className="label-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
                     {post.date.toUpperCase()}
                   </span>
-                  <span
-                    className="label-mono group-hover:text-[#1B8F3A] transition-colors"
-                    style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em" }}
-                  >
-                    READ →
+                  <span className="label-xs-accent group-hover:text-white transition-colors">
+                    READ
+                    <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
                   </span>
                 </div>
               </div>

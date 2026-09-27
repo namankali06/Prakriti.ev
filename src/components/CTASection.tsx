@@ -1,68 +1,35 @@
 import { useInView } from "../hooks/useInView"
+
 interface CTAProps { onTestRide: () => void }
 
 export default function CTASection({ onTestRide }: CTAProps) {
   const { ref, inView } = useInView(0.15)
 
   return (
-    <section
-      id="final-cta"
-      style={{ background: "#111511", borderTop: "1px solid rgba(255,255,255,0.06)" }}
-    >
+    <section id="final-cta" className="section-dark" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
       <div
         ref={ref}
-        className={`container-bb py-28 lg:py-40 text-center transition-all duration-700 motion-safe:transition-all ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`container py-20 lg:py-28 text-center transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        <div
-          className="label-mono w-fit mx-auto mb-10"
-          style={{
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "3px",
-            padding: "4px 12px",
-            color: "rgba(255,255,255,0.5)",
-            fontSize: "10px",
-            letterSpacing: "0.1em",
-          }}
-        >
-          Get Started
-        </div>
-        <h2
-          className="display-xl text-white mx-auto mb-6"
-          style={{
-            fontSize: "clamp(2.2rem, 5.5vw, 6rem)",
-            lineHeight: 0.95,
-            letterSpacing: "-0.025em",
-            maxWidth: "800px",
-          }}
-        >
+        <div className="section-label-accent mx-auto mb-6">Get Started</div>
+        <h2 className="display-2xl mx-auto mb-4" style={{ maxWidth: "800px" }}>
           READY TO MOVE<br />
-          <span style={{ color: "#1B8F3A" }}>ELECTRIC?</span>
+          <span className="text-gradient-accent">ELECTRIC?</span>
         </h2>
-        <p
-          className="body-copy mx-auto mb-14"
-          style={{
-            fontSize: "17px",
-            color: "rgba(255,255,255,0.6)",
-            lineHeight: 1.65,
-            maxWidth: "460px",
-          }}
-        >
-          Book a no-obligation test ride at your nearest Prakriti experience centre.
-          Our team will walk you through the full range and operating economics.
+        <p className="body-base text-neutral-400 mx-auto mb-10" style={{ maxWidth: "460px", lineHeight: 1.7 }}>
+          Book a no-obligation test ride at your nearest Prakriti experience centre. Our team will walk you through the full range and operating economics.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={onTestRide}
-            className="btn btn-green cursor-pointer"
+            className="btn btn-primary cursor-pointer"
             style={{ fontSize: "15px", paddingLeft: "36px", paddingRight: "36px" }}
           >
             Book a Test Ride
           </button>
           <a
             href="#dealership"
-            className="btn btn-ghost-light"
+            className="btn btn-secondary"
             style={{ fontSize: "15px", paddingLeft: "36px", paddingRight: "36px" }}
           >
             Find a Dealer

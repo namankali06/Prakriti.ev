@@ -37,72 +37,39 @@ export default function Dealership() {
   }
 
   return (
-    <section
-      id="dealership"
-      className="bg-white"
-      style={{ borderTop: "1px solid #E3E7E3" }}
-    >
+    <section id="dealership" className="section-light" style={{ borderTop: "1px solid var(--color-border-primary)" }}>
       <div
         ref={ref}
-        className={`container-bb py-24 lg:py-32 transition-all duration-700 motion-safe:transition-all ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`container py-16 lg:py-24 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left — Dealership info */}
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
-            <div className="label-mono-green mb-6">Dealership & Enquiries</div>
-            <h2
-              className="display-xl text-[#111111] mb-6"
-              style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1.0, letterSpacing: "-0.02em" }}
-            >
+            <div className="section-label-accent mb-4">Dealership & Enquiries</div>
+            <h2 className="display-2xl mb-4">
               BUILD YOUR<br />
               BUSINESS WITH<br />
               PRAKRITI.
             </h2>
-            <p
-              className="body-copy text-[#555B56] mb-10"
-              style={{ fontSize: "16px", lineHeight: 1.65, maxWidth: "420px" }}
-            >
-              Whether you are a prospective buyer, fleet operator, or interested in a
-              dealership partnership — fill in the form and our team will respond within
-              24 hours.
+            <p className="body-base text-neutral-400 mb-8" style={{ maxWidth: "420px", lineHeight: 1.7 }}>
+              Whether you are a prospective buyer, fleet operator, or interested in a dealership partnership — fill in the form and our team will respond within 24 hours.
             </p>
 
-            {/* Dealer CTA block */}
-            <div
-              className="mb-10 p-6"
-              style={{
-                background: "#EAF5EC",
-                border: "1px solid rgba(27,143,58,0.2)",
-                borderRadius: "6px",
-              }}
-            >
-              <p
-                className="display-xl text-[#12652A] mb-2"
-                style={{ fontSize: "18px", lineHeight: 1.2 }}
-              >
-                Become a Dealer
-              </p>
-              <p
-                className="body-copy text-[#555B56] mb-5"
-                style={{ fontSize: "14px", lineHeight: 1.6 }}
-              >
-                Prakriti is expanding its authorised dealer network across India. Select
-                "Dealership" in the enquiry type to begin the conversation.
+            <div className="card mb-8" style={{ padding: "24px", background: "rgba(220, 38, 38, 0.08)", borderColor: "rgba(220, 38, 38, 0.2)" }}>
+              <p className="display-md text-[var(--color-accent-primary)] mb-2">Become a Dealer</p>
+              <p className="body-sm text-neutral-400 mb-4" style={{ fontSize: "14px", lineHeight: 1.6 }}>
+                Prakriti is expanding its authorised dealer network across India. Select "Dealership" in the enquiry type to begin the conversation.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <a href="#enquiry" className="btn btn-green" style={{ fontSize: "13px" }}>
+                <a href="#enquiry" className="btn btn-primary" style={{ fontSize: "13px" }}>
                   Dealer Application
                 </a>
-                <a href="#" className="btn btn-outline" style={{ fontSize: "13px" }}>
+                <a href="#" className="btn btn-secondary" style={{ fontSize: "13px" }}>
                   Download Brochure
                 </a>
               </div>
             </div>
 
-            {/* Contact rows */}
-            <div style={{ borderTop: "1px solid #E3E7E3" }}>
+            <div style={{ borderTop: "1px solid var(--color-border-primary)" }}>
               {[
                 { label: "Dealership enquiries", value: "dealership@bigbullev.in" },
                 { label: "Customer support", value: "support@bigbullev.in" },
@@ -116,43 +83,28 @@ export default function Dealership() {
             </div>
           </div>
 
-          {/* Right — Enquiry form */}
           <div>
             {submitted ? (
-              <div
-                className="text-center p-10"
-                style={{
-                  background: "#EAF5EC",
-                  border: "1px solid rgba(27,143,58,0.25)",
-                  borderRadius: "6px",
-                }}
-              >
-                <div
-                  className="w-12 h-12 flex items-center justify-center mx-auto mb-4"
-                  style={{ background: "#1B8F3A", borderRadius: "4px" }}
-                >
+              <div className="card" style={{ padding: "40px", textAlign: "center", background: "rgba(220, 38, 38, 0.08)", borderColor: "rgba(220, 38, 38, 0.2)" }}>
+                <div className="w-12 h-12 flex items-center justify-center mx-auto mb-4" style={{ background: "var(--color-accent-primary)", borderRadius: "var(--radius-lg)" }}>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M4 10.5L8 14.5L16 6.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <h3 className="display-xl text-[#111111] mb-2" style={{ fontSize: "22px" }}>
-                  Enquiry received.
-                </h3>
-                <p className="body-copy text-[#555B56]" style={{ fontSize: "15px" }}>
-                  We will respond within 24 hours.
-                </p>
+                <h3 className="display-xl mb-2">Enquiry received.</h3>
+                <p className="body-base text-neutral-400">We will respond within 24 hours.</p>
               </div>
             ) : (
               <form
                 id="enquiry"
                 onSubmit={handleSubmit}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-4"
                 noValidate
               >
                 <datalist id="indian-cities">
                   {INDIAN_CITIES.map((city) => <option key={city} value={city} />)}
                 </datalist>
-                <div className="grid sm:grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="input-label" htmlFor="enq-name">Full Name *</label>
                     <input
@@ -168,7 +120,7 @@ export default function Dealership() {
                   <div>
                     <label className="input-label" htmlFor="enq-phone">Mobile Number *</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[14px] text-[#555B56] font-medium select-none">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-500 font-medium select-none">
                         +91
                       </span>
                       <input
@@ -184,7 +136,7 @@ export default function Dealership() {
                     </div>
                   </div>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="input-label" htmlFor="enq-city">City</label>
                     <input
@@ -226,12 +178,12 @@ export default function Dealership() {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-green w-full justify-center cursor-pointer"
+                  className="btn btn-primary w-full justify-center cursor-pointer"
                   style={{ fontSize: "15px" }}
                 >
                   Submit Enquiry
                 </button>
-                <p className="text-center text-[#93939F]" style={{ fontSize: "12px" }}>
+                <p className="text-center text-neutral-500 text-xs">
                   We do not share your information with third parties.
                 </p>
               </form>

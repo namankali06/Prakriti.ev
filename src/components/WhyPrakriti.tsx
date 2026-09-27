@@ -27,54 +27,30 @@ export default function WhyPrakriti() {
   const { ref, inView } = useInView()
 
   return (
-    <section
-      id="why"
-      style={{ background: "#F5F7F4", borderTop: "1px solid #E3E7E3" }}
-    >
+    <section id="why" className="section-secondary" style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
       <div
         ref={ref}
-        className={`container-bb py-24 lg:py-32 transition-all duration-700 motion-safe:transition-all ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+        className={`container py-16 lg:py-24 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        {/* Header */}
-        <div
-          className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start mb-16 lg:mb-24"
-        >
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start mb-12 lg:mb-16">
           <div>
-            <div className="label-mono-green mb-6">Built for India</div>
-            <h2
-              className="display-xl text-[#111111]"
-              style={{
-                fontSize: "clamp(2rem, 4.5vw, 4rem)",
-                lineHeight: 1.0,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Designed around<br />
-              real-world work.
+            <div className="section-label-accent mb-4">Built for India</div>
+            <h2 className="display-2xl">
+              Designed around<br />real-world work.
             </h2>
           </div>
-          <div className="lg:pt-4">
-            <p
-              className="body-copy text-[#555B56]"
-              style={{ fontSize: "17px", lineHeight: 1.65, maxWidth: "440px" }}
-            >
-              We build electric rickshaws for people who depend on their vehicle every single
-              day. No compromises on reliability. No compromises on service. Only performance
-              that earns its place.
+          <div className="lg:pt-2">
+            <p className="body-base text-neutral-400" style={{ maxWidth: "440px", lineHeight: 1.7 }}>
+              We build electric rickshaws for people who depend on their vehicle every single day. No compromises on reliability. No compromises on service. Only performance that earns its place.
             </p>
           </div>
         </div>
 
-        {/* Full-width road image */}
-        <div
-          className="relative overflow-hidden mb-16 lg:mb-20"
-          style={{ borderRadius: "6px" }}
-        >
+        <div className="relative overflow-hidden card mb-12 lg:mb-16">
           <div style={{ aspectRatio: "21/9", minHeight: "240px" }}>
             <img
               src="/ev-manufacturing-india.png"
-              alt="Prakriti EV on Indian road"
+              alt="Prakriti EV · Indian roads"
               className="w-full h-full object-cover"
               loading="lazy"
             />
@@ -82,40 +58,33 @@ export default function WhyPrakriti() {
           <div
             className="absolute bottom-0 left-0 right-0"
             style={{
-              background: "linear-gradient(to top, rgba(17,20,17,0.65) 0%, transparent 100%)",
+              background: "linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 100%)",
               padding: "32px 28px 20px",
             }}
           >
-            <p className="label-mono" style={{ color: "rgba(255,255,255,0.7)", fontSize: "10px" }}>
+            <p className="label-xs" style={{ color: "rgba(255,255,255,0.6)" }}>
               Prakriti EV · Indian roads
             </p>
           </div>
         </div>
 
-        {/* Feature rows */}
-        <div style={{ borderTop: "1px solid #D5D7D8" }}>
+        <div style={{ borderTop: "1px solid var(--color-border-subtle)" }}>
           {INDIA_FEATURES.map((item) => (
             <div
               key={item.number}
-              className="grid gap-4 sm:gap-8 py-8 items-baseline"
+              className="grid gap-4 sm:gap-6 py-6 items-baseline"
               style={{
-                gridTemplateColumns: "64px 1fr 2fr",
-                borderBottom: "1px solid #D5D7D8",
+                gridTemplateColumns: "56px 1fr 2fr",
+                borderBottom: "1px solid var(--color-border-subtle)",
               }}
             >
-              <span className="label-mono-green" style={{ fontSize: "11px" }}>
+              <span className="label-xs-accent" style={{ fontSize: "10px" }}>
                 {item.number}
               </span>
-              <h3
-                className="display-xl text-[#111111]"
-                style={{ fontSize: "18px", lineHeight: 1.2 }}
-              >
+              <h3 className="display-md">
                 {item.title}
               </h3>
-              <p
-                className="body-copy text-[#555B56]"
-                style={{ fontSize: "15px", lineHeight: 1.65 }}
-              >
+              <p className="body-sm text-neutral-400" style={{ lineHeight: 1.7 }}>
                 {item.body}
               </p>
             </div>

@@ -32,27 +32,27 @@ const flowResponses: Record<string, { text: string; next?: 'choices' }> = {
     next: 'choices',
   },
   compare: {
-    text: "Our three models each serve a different rider. The Defender 2.0 offers 140 km range, the Loader is built for cargo and commerce, and the Glider 2.0 is the sleek urban choice at 100 km range. Which would you like to know more about?",
+    text: "Our models each serve a different rider. The Defender offers 140 km range, the Loader is built for cargo, the Glider is the urban choice at 100 km, and the Cruiser/Explorer/Phantom are our performance scooters. Which would you like to know more about?",
   },
   range: {
-    text: "The Defender 2.0 leads with 140 km per charge (4-hour full charge). The Loader achieves 120 km, and the Glider 2.0 offers 100 km. All use lithium-ion battery systems with IP67 water resistance.",
+    text: "The Defender leads with 140 km per charge (4-hour full charge). The Loader achieves 120 km, and the Glider offers 100 km. All use lithium-ion battery systems with IP67 water resistance.",
   },
   dealer: {
-    text: "We have 50+ authorised dealers across 15+ states in India. Visit our Dealership section above to find your nearest showroom or submit a dealer enquiry.",
+    text: "We have authorised dealers across India. Visit our Dealership section above to find your nearest showroom or submit a dealer enquiry.",
   },
   done: {
     text: "Based on what you've shared, I would recommend booking a test ride at your nearest dealership — it's the best way to find your perfect EV. Shall I help you with that?",
   },
-  'Maximum range': { text: "The Defender 2.0 is your ideal choice — 140 km range, dual battery system, EABS braking. Built for riders who commute long distances daily without charging anxiety." },
-  'Daily commuting': { text: "The Glider 2.0 is a fantastic daily companion — nimble in city traffic, 100 km range (more than enough for most daily commutes), and a sleek design. Would you like to book a test ride?" },
-  'Performance': { text: "The Defender 2.0 leads on performance — EABS smart braking, 12-inch alloy wheels, hill assist, NFC lock and dual battery system. It is our most fully-featured model." },
+  'Maximum range': { text: "The Defender is your ideal choice — 140 km range, dual battery system, EABS braking. Built for riders who commute long distances daily without charging anxiety." },
+  'Daily commuting': { text: "The Glider is a fantastic daily companion — nimble in city traffic, 100 km range (more than enough for most daily commutes), and a sleek design. Would you like to book a test ride?" },
+  'Performance': { text: "The Defender leads on performance — EABS smart braking, 12-inch alloy wheels, hill assist, NFC lock and dual battery system. It is our most fully-featured model." },
   'Budget': { text: "All Prakriti EV models are competitively priced for the Indian market. I recommend visiting your nearest dealer for current pricing and finance options. Shall I help you find a dealer?" },
 }
 
 export default function Chatbot({ onTestRide }: ChatbotProps) {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
-    { from: 'bot', text: "Hi! I'm Prakriti Assist 👋 Looking for the right electric scooter?" },
+    { from: 'bot', text: "Hi! I'm Prakriti Assist 👋 Looking for the right electric vehicle?" },
   ])
   const [flow, setFlow] = useState<Flow>('initial')
   const [showChoices, setShowChoices] = useState(false)
@@ -96,75 +96,67 @@ export default function Chatbot({ onTestRide }: ChatbotProps) {
 
   return (
     <>
-      {/* Floating button */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-2">
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
         {!open && (
-          <div className="bg-[#0F0F0F] text-white text-xs font-manrope font-600 px-3 py-1.5 pointer-events-none animate-pulse">
+          <div className="card text-white text-xs font-medium px-3 py-1.5 pointer-events-none animate-pulse" style={{ background: "rgba(10,10,10,0.9)", borderColor: "var(--color-border-subtle)" }}>
             Need help choosing an EV?
           </div>
         )}
         <button
           onClick={() => setOpen(!open)}
-          className="w-13 h-13 sm:w-14 sm:h-14 bg-[#0DCCAA] flex items-center justify-center shadow-lg hover:bg-[#0F0F0F] transition-colors duration-200"
+          className="btn btn-icon btn-primary w-12 h-12 sm:w-13 sm:h-13"
           aria-label="Open Prakriti Assist"
           style={{ width: 52, height: 52 }}
         >
           {open ? (
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           )}
         </button>
       </div>
 
-      {/* Chat panel */}
       <div
-        className={`fixed bottom-[72px] right-5 z-50 w-[calc(100vw-40px)] sm:w-[360px] bg-white border border-[#E2E0DC] shadow-2xl transition-all duration-300 origin-bottom-right ${
-          open ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-90 pointer-events-none'
-        }`}
+        className={`fixed bottom-[68px] right-4 z-50 w-[calc(100vw-32px)] sm:w-[360px] card border-[var(--color-border-subtle)] shadow-2xl transition-all duration-300 origin-bottom-right ${open ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-90 pointer-events-none'}`}
       >
-        {/* Header */}
-        <div className="bg-[#0F0F0F] px-5 py-4 flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#0DCCAA] flex items-center justify-center">
+        <div className="bg-[var(--color-bg-secondary)] px-4 py-3 flex items-center gap-3 border-b" style={{ borderColor: "var(--color-border-subtle)" }}>
+          <div className="w-8 h-8 bg-[var(--color-accent-primary)] flex items-center justify-center rounded-lg">
             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </div>
           <div>
-            <div className="font-manrope font-700 text-white text-sm">Prakriti Assist</div>
-            <div className="text-[#0DCCAA] text-[10px] font-inter">Your EV guide</div>
+            <div className="font-medium text-white text-sm">Prakriti Assist</div>
+            <div className="label-xs-accent">Your EV guide</div>
           </div>
-          <div className="ml-auto w-2 h-2 rounded-full bg-[#0DCCAA] animate-pulse" />
+          <div className="ml-auto w-2 h-2 rounded-full bg-[var(--color-accent-primary)] animate-pulse" />
         </div>
 
-        {/* Messages */}
-        <div className="h-64 sm:h-72 overflow-y-auto p-4 space-y-3 bg-[#F6F5F3]">
+        <div className="h-64 sm:h-72 overflow-y-auto p-3 space-y-2 bg-[var(--color-bg-secondary)]">
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-[82%] px-3.5 py-2.5 text-sm font-inter leading-relaxed ${
-                  msg.from === 'bot'
-                    ? 'bg-white border border-[#E2E0DC] text-[#0F0F0F]'
-                    : 'bg-[#0DCCAA] text-white'
-                }`}
+                className={`max-w-[82%] px-3 py-2 text-sm leading-relaxed ${msg.from === 'bot'
+                  ? 'bg-[var(--color-bg-card)] border text-white'
+                  : 'bg-[var(--color-accent-primary)] text-white'}`}
+                style={{ borderColor: "var(--color-border-subtle)" }}
               >
                 {msg.text}
               </div>
             </div>
           ))}
 
-          {/* Typing indicator */}
           {typing && (
             <div className="flex justify-start">
-              <div className="bg-white border border-[#E2E0DC] px-4 py-3 flex gap-1">
+              <div className="bg-[var(--color-bg-card)] border px-3 py-2 flex gap-1" style={{ borderColor: "var(--color-border-subtle)" }}>
                 {[0, 1, 2].map((i) => (
                   <span
                     key={i}
-                    className="w-1.5 h-1.5 rounded-full bg-[#9E9E9E] animate-bounce"
+                    className="w-1.5 h-1.5 rounded-full bg-neutral-500 animate-bounce"
                     style={{ animationDelay: `${i * 150}ms` }}
                   />
                 ))}
@@ -174,15 +166,14 @@ export default function Chatbot({ onTestRide }: ChatbotProps) {
           <div ref={bottomRef} />
         </div>
 
-        {/* Quick replies */}
-        <div className="border-t border-[#E2E0DC] p-3 bg-white">
+        <div className="border-t p-2 bg-[var(--color-bg-secondary)]" style={{ borderColor: "var(--color-border-subtle)" }}>
           {flow === 'initial' && (
             <div className="flex flex-wrap gap-2">
               {quickReplies.map((r) => (
                 <button
                   key={r.label}
                   onClick={() => handleQuickReply(r.label, r.flow)}
-                  className="px-3 py-1.5 border border-[#E2E0DC] text-[11px] font-manrope font-600 text-[#0F0F0F] hover:border-[#0DCCAA] hover:text-[#0DCCAA] transition-colors duration-150"
+                  className="btn btn-ghost btn-sm"
                 >
                   {r.label}
                 </button>
@@ -191,12 +182,12 @@ export default function Chatbot({ onTestRide }: ChatbotProps) {
           )}
 
           {showChoices && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mt-2">
               {choiceReplies.map((r) => (
                 <button
                   key={r.label}
                   onClick={() => handleQuickReply(r.label, r.flow)}
-                  className="px-3 py-1.5 border border-[#E2E0DC] text-[11px] font-manrope font-600 text-[#0F0F0F] hover:border-[#0DCCAA] hover:text-[#0DCCAA] transition-colors duration-150"
+                  className="btn btn-ghost btn-sm"
                 >
                   {r.label}
                 </button>
@@ -210,7 +201,7 @@ export default function Chatbot({ onTestRide }: ChatbotProps) {
                 setFlow('initial')
                 setShowChoices(false)
               }}
-              className="text-[11px] font-manrope font-600 text-[#6B6B6B] hover:text-[#0DCCAA] transition-colors"
+              className="label-xs-accent mt-2 block w-full text-left"
             >
               ← Back to menu
             </button>
