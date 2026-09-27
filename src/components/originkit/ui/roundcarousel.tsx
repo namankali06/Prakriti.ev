@@ -54,12 +54,14 @@ export default function RoundCarousel({
   const count = items.length;
 
   const ringRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef(0);
   const rotYRef = useRef(0);
   const velRef = useRef(0);
   const lastRef = useRef(0);
   const dragRef = useRef({ active: false, x: 0 });
   const [currentRot, setCurrentRot] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
   const angle = 360 / count;
   const factor = 1 + spacing * 0.15;
@@ -67,7 +69,20 @@ export default function RoundCarousel({
   const radiusPx = cornerRadius;
   const degPerSec = speed * 6 * (direction === "left" ? -1 : 1);
 
+  // Viewport detection
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: "100px", threshold: 0.01 }
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
     const ring = ringRef.current;
     if (!ring) return;
     const apply = () => {
@@ -94,7 +109,7 @@ export default function RoundCarousel({
     };
     rafRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [radius, degPerSec, count]);
+  }, [radius, degPerSec, count, isVisible]);
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (!drag) return;
@@ -159,6 +174,7 @@ export default function RoundCarousel({
 
   return (
     <div
+      ref={containerRef}
       style={{
         ...style,
         width: "100%",

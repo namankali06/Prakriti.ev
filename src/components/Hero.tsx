@@ -30,6 +30,7 @@ export default function Hero({ onTestRide }: HeroProps) {
           angle={-170}
           hover={85}
           reach={300}
+          quality="medium"
           style={{ width: "100%", height: "100%", minWidth: 0, minHeight: 0 }}
         />
       </div>

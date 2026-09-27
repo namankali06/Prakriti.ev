@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const MAX_DPR = 2
 const NAME = "RibbonGlow"
@@ -296,6 +296,7 @@ interface RibbonGlowProps {
     reach?: number
     width?: number
     height?: number
+    quality?: "high" | "medium" | "low"
 }
 
 export default function RibbonGlow(props: RibbonGlowProps) {
@@ -311,10 +312,13 @@ export default function RibbonGlow(props: RibbonGlowProps) {
         reach = 240,
         width,
         height,
+        quality = "medium",
     } = props
 
     const rootRef = useRef<HTMLDivElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    const [isVisible, setIsVisible] = useState(true)
+    const [isLowEnd, setIsLowEnd] = useState(false)
 
     const vRef = useRef({ background, color1, color2, speed: 1, size: 1, angle: 0, hover: 1, reach: 240 })
     vRef.current = {
@@ -330,7 +334,28 @@ export default function RibbonGlow(props: RibbonGlowProps) {
         reach: clampN(num(reach, 240), 10, 800),
     }
 
+    // Detect low-end device
     useEffect(() => {
+        const nav = navigator as Navigator & { deviceMemory?: number; hardwareConcurrency?: number }
+        const mem = nav.deviceMemory || 4
+        const cores = nav.hardwareConcurrency || 4
+        setIsLowEnd(mem < 4 || cores < 4)
+    }, [])
+
+    // Viewport detection
+    useEffect(() => {
+        const root = rootRef.current
+        if (!root) return
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsVisible(entry.isIntersecting),
+            { rootMargin: "100px", threshold: 0.01 }
+        )
+        observer.observe(root)
+        return () => observer.disconnect()
+    }, [])
+
+    useEffect(() => {
+        if (!isVisible) return
         const canvas = canvasRef.current
         const root = rootRef.current
         if (!canvas || !root) return
@@ -359,6 +384,9 @@ export default function RibbonGlow(props: RibbonGlowProps) {
         let last = -1
         let clock = 0
 
+        const qualityScale = quality === "high" ? 1 : quality === "medium" ? 0.7 : 0.5
+        const isLowQuality = isLowEnd || quality === "low"
+
         const render = (now: number) => {
             raf = requestAnimationFrame(render)
             const dt = last < 0 ? 0 : clampN((now - last) / 1000, 0, 0.05)
@@ -366,7 +394,7 @@ export default function RibbonGlow(props: RibbonGlowProps) {
             const v = vRef.current
             clock = (clock + dt * v.speed) % 3600
 
-            const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
+            const dpr = Math.min((window.devicePixelRatio || 1) * qualityScale, MAX_DPR)
             const cw = canvas.clientWidth || 1200
             const ch = canvas.clientHeight || 800
             const bw = Math.max(1, Math.round(cw * dpr))
@@ -375,7 +403,9 @@ export default function RibbonGlow(props: RibbonGlowProps) {
                 canvas.width = bw
                 canvas.height = bh
             }
-            target.resize(Math.max(1, Math.round(bw / 2)), Math.max(1, Math.round(bh / 2)))
+            const targetW = Math.max(1, Math.round(bw / 2 * qualityScale))
+            const targetH = Math.max(1, Math.round(bh / 2 * qualityScale))
+            target.resize(targetW, targetH)
 
             const present = ptr.inside ? 1 : 0
             if (present && on < 0.02) {
@@ -438,7 +468,7 @@ export default function RibbonGlow(props: RibbonGlowProps) {
             gl.deleteProgram(field)
             gl.deleteProgram(finish)
         }
-    }, [])
+    }, [isVisible, quality, isLowEnd])
 
     return (
         <div
