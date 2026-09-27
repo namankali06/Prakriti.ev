@@ -39,32 +39,32 @@ export default function Navbar({ onTestRide }: HeaderProps) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[calc(100%-2rem)] max-w-[1440px] ${
           scrolled
-            ? "bg-[var(--color-bg-secondary)/95] backdrop-blur-md border-b border-[var(--color-border-subtle)]"
-            : "bg-transparent border-b border-transparent"
+            ? "bg-cream/95 backdrop-blur-md shadow-[0_8px_32px_rgba(21,5,7,0.4)]"
+            : "bg-cream/90 backdrop-blur-md"
         }`}
-        style={{ height: "64px" }}
+        style={{ borderRadius: "var(--radius-full)" }}
       >
-        <div className="container h-full flex items-center justify-between">
+        <div className="container h-14 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2 flex-shrink-0" aria-label="Prakriti EV home">
-            <span className="display-xl text-white" style={{ fontSize: "17px", letterSpacing: "-0.01em" }}>
-              PRAKRITI
-            </span>
-            <span className="label-xs text-white px-2 py-1 rounded-md" style={{ background: "var(--color-accent-primary)" }}>
-              EV
-            </span>
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="16" cy="16" r="14" stroke="#150507" strokeWidth="2.5" />
+              <path d="M16 8v8M8 16h8" stroke="#150507" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+            <span className="display-sm text-ink" style={{ letterSpacing: "-0.01em" }}>PRAKRITI</span>
+            <span className="label-xs text-ink px-2 py-0.5 rounded-full" style={{ background: "var(--color-cream)" }}>EV</span>
           </a>
 
-          <nav className="hidden lg:flex items-center h-full gap-1" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
             <div
               ref={dropdownRef}
-              className="relative h-full flex items-center"
+              className="relative"
               onMouseEnter={() => setProductsOpen(true)}
               onMouseLeave={() => setProductsOpen(false)}
             >
               <button
-                className="h-full px-4 text-xs font-medium text-neutral-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5"
+                className="nav-pill px-4 py-1.5 text-xs font-medium text-ink hover:bg-teal-2 transition-colors cursor-pointer flex items-center gap-1.5"
                 aria-expanded={productsOpen}
                 aria-haspopup="true"
               >
@@ -74,7 +74,7 @@ export default function Navbar({ onTestRide }: HeaderProps) {
                 </svg>
               </button>
               <div
-                className={`absolute top-full left-0 mt-1 w-72 bg-[var(--color-bg-card)] overflow-hidden transition-all duration-200 origin-top ${productsOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+                className={`absolute top-full left-0 mt-2 w-72 bg-[var(--color-bg-card)] overflow-hidden transition-all duration-200 origin-top ${productsOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
                 style={{
                   border: "1px solid var(--color-border-subtle)",
                   borderRadius: "var(--radius-lg)",
@@ -106,17 +106,17 @@ export default function Navbar({ onTestRide }: HeaderProps) {
               <a
                 key={link.label}
                 href={link.href}
-                className="h-full px-4 text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center"
+                className="nav-pill px-4 py-1.5 text-xs font-medium text-ink hover:bg-teal-2 transition-colors"
               >
                 {link.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={onTestRide}
-              className="btn btn-primary btn-sm hidden lg:inline-flex cursor-pointer"
+              className="nav-pill px-5 py-1.5 text-xs font-medium hidden lg:inline-flex cursor-pointer"
             >
               Book Test Ride
             </button>
@@ -127,9 +127,9 @@ export default function Navbar({ onTestRide }: HeaderProps) {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
             >
-              <span className={`block w-[22px] h-[1.5px] bg-white transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-[5.5px]" : ""}`} />
-              <span className={`block w-[22px] h-[1.5px] bg-white transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block w-[22px] h-[1.5px] bg-white transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-[5.5px]" : ""}`} />
+              <span className={`block w-[22px] h-[1.5px] bg-ink transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-[5.5px]" : ""}`} />
+              <span className={`block w-[22px] h-[1.5px] bg-ink transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block w-[22px] h-[1.5px] bg-ink transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-[5.5px]" : ""}`} />
             </button>
           </div>
         </div>
@@ -143,21 +143,21 @@ export default function Navbar({ onTestRide }: HeaderProps) {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        <div className="flex flex-col h-full pt-[64px] overflow-y-auto">
+        <div className="flex flex-col h-full pt-14 overflow-y-auto">
           <nav className="flex flex-col flex-1 px-6 pt-8" aria-label="Mobile navigation">
             {NAV_LINKS.map((link, i) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={closeMenu}
-                className={`py-5 display-xl text-[20px] text-white hover:text-[var(--color-accent-primary)] transition-colors ${i < NAV_LINKS.length - 1 ? "border-b" : ""}`}
+                className={`py-4 display-sm text-[18px] text-cream hover:text-[var(--color-accent-primary)] transition-colors ${i < NAV_LINKS.length - 1 ? "border-b" : ""}`}
                 style={{ borderColor: "var(--color-border-subtle)", letterSpacing: "-0.01em" }}
               >
                 {link.label}
               </a>
             ))}
           </nav>
-          <div className="px-6 pb-10 pt-6 border-t" style={{ borderColor: "var(--color-border-subtle)" }}>
+          <div className="px-6 pb-8 pt-4 border-t" style={{ borderColor: "var(--color-border-subtle)" }}>
             <button
               onClick={() => { closeMenu(); onTestRide() }}
               className="btn btn-primary w-full justify-center cursor-pointer"

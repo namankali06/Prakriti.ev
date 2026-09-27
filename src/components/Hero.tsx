@@ -1,402 +1,270 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-interface HeroSlide {
-  id: string
-  image: string
-  title: string
-  subtitle: string
-  color: string
-  specs: { label: string; value: string }[]
-}
-
-const HERO_SLIDES: HeroSlide[] = [
-  {
-    id: "cruiser-teal",
-    image: "/scooter-1.png",
-    title: "Big Bull Cruiser",
-    subtitle: "Neo Teal Edition",
-    color: "#2FD3F2",
-    specs: [
-      { label: "Range", value: "110 km" },
-      { label: "Top Speed", value: "65 km/h" },
-      { label: "Charge Time", value: "3.5 hrs" },
-    ],
-  },
-  {
-    id: "explorer-orange",
-    image: "/scooter-2.png",
-    title: "Big Bull Explorer",
-    subtitle: "ESPA Orange",
-    color: "#FF6B35",
-    specs: [
-      { label: "Range", value: "130 km" },
-      { label: "Top Speed", value: "75 km/h" },
-      { label: "Charge Time", value: "4.5 hrs" },
-    ],
-  },
-  {
-    id: "phantom-red",
-    image: "/scooter-3.png",
-    title: "Big Bull Phantom",
-    subtitle: "Race Red",
-    color: "#E84D4D",
-    specs: [
-      { label: "Range", value: "95 km" },
-      { label: "Top Speed", value: "90 km/h" },
-      { label: "Charge Time", value: "2 hrs" },
-    ],
-  },
-  {
-    id: "alpha-silver",
-    image: "/scooter-4.png",
-    title: "Big Bull Alpha",
-    subtitle: "Urban Silver",
-    color: "#9CA3AF",
-    specs: [
-      { label: "Range", value: "150 km" },
-      { label: "Top Speed", value: "55 km/h" },
-      { label: "Charge Time", value: "Swap Ready" },
-    ],
-  },
-  {
-    id: "nexus-blue",
-    image: "/scooter-5.png",
-    title: "Big Bull Nexus",
-    subtitle: "Electric Blue",
-    color: "#3B82F6",
-    specs: [
-      { label: "Range", value: "120 km" },
-      { label: "Top Speed", value: "70 km/h" },
-      { label: "Charge Time", value: "4 hrs" },
-    ],
-  },
-  {
-    id: "zenith-gold",
-    image: "/scooter-6.png",
-    title: "Big Bull Zenith",
-    subtitle: "Champagne Gold",
-    color: "#D4A843",
-    specs: [
-      { label: "Range", value: "140 km" },
-      { label: "Top Speed", value: "80 km/h" },
-      { label: "Charge Time", value: "3 hrs" },
-    ],
-  },
-]
+gsap.registerPlugin(ScrollTrigger)
 
 interface HeroProps {
   onTestRide: () => void
 }
 
+const COLORWAYS = [
+  { name: "Urban Teal", color: "#1fb5a8", image: "/scooter-1.png", active: true },
+  { name: "Midnight Ink", color: "#1a1a2e", image: "/scooter-2.png", active: false },
+  { name: "Pearl White", color: "#f6efe8", image: "/scooter-3.png", active: false },
+]
+
 export default function Hero({ onTestRide }: HeroProps) {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
-
   const heroRef = useRef<HTMLElement>(null)
-  const imageRefs = useRef<(HTMLElement | null)[]>([])
-  const textRefs = useRef<(HTMLElement | null)[]>([])
-  const badgeRefs = useRef<(HTMLElement | null)[]>([])
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const productRef = useRef<HTMLDivElement>(null)
+  const watermarkRef = useRef<HTMLDivElement>(null)
+  const [activeColor, setActiveColor] = useState(0)
+  const [mounted, setMounted] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
-  const advanceSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % HERO_SLIDES.length)
+  useEffect(() => {
+    setMounted(true)
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setPrefersReducedMotion(mediaQuery.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener("change", handler)
+    return () => mediaQuery.removeEventListener("change", handler)
   }, [])
 
-  const resetTimer = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    if (!isHovering) {
-      intervalRef.current = setInterval(advanceSlide, 4500)
-    }
-  }, [advanceSlide, isHovering])
-
   useEffect(() => {
-    intervalRef.current = setInterval(advanceSlide, 4500)
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [advanceSlide])
+    if (!mounted || prefersReducedMotion) return
 
-  useEffect(() => {
-    resetTimer()
-  }, [activeIndex, resetTimer])
-
-  useEffect(() => {
     const ctx = gsap.context(() => {
-      imageRefs.current.forEach((el, i) => {
-        if (!el) return
-        gsap.set(el, { opacity: i === activeIndex ? 1 : 0, scale: 1 })
-      })
+      if (productRef.current) {
+        gsap.fromTo(productRef.current,
+          { opacity: 0, y: 60, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" }
+        )
+      }
 
-      textRefs.current.forEach((el, i) => {
-        if (!el) return
-        gsap.set(el, { opacity: i === activeIndex ? 1 : 0, y: 20 })
-      })
+      if (watermarkRef.current) {
+        gsap.fromTo(watermarkRef.current,
+          { opacity: 0, scale: 1.1 },
+          { opacity: 0.04, scale: 1, duration: 1.2, ease: "power3.out", delay: 0.2 }
+        )
+      }
 
-      badgeRefs.current.forEach((el, i) => {
-        if (!el) return
-        gsap.set(el, { opacity: i === activeIndex ? 1 : 0, y: 30 })
-      })
-
-      if (imageRefs.current[activeIndex]) {
-        gsap.to(imageRefs.current[activeIndex], {
-          scale: 1.05,
-          duration: 4.5,
-          ease: "none",
+      const hero = heroRef.current
+      if (hero) {
+        const parallaxElements = hero.querySelectorAll(".parallax-layer")
+        parallaxElements.forEach((el, i) => {
+          const depth = (i + 1) * 0.15
+          gsap.to(el, {
+            yPercent: 20 * depth,
+            ease: "none",
+            scrollTrigger: {
+              trigger: hero,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            }
+          })
         })
       }
     }, heroRef)
+
     return () => ctx?.revert()
-  }, [activeIndex])
+  }, [mounted, prefersReducedMotion])
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const particles = heroRef.current?.querySelectorAll(".particle")
-      if (particles) {
-        gsap.to(particles, {
-          y: -100,
-          x: (i) => (i % 2 === 0 ? 50 : -50),
-          rotation: 360,
-          duration: (i) => 20 + i * 5,
-          repeat: -1,
-          ease: "none",
-          stagger: 0.5,
-        })
-      }
-
-      const gridLines = heroRef.current?.querySelectorAll(".grid-line")
-      if (gridLines) {
-        gsap.to(gridLines, {
-          opacity: (i) => (i % 2 === 0 ? 0.3 : 0.15),
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          stagger: 0.3,
-        })
-      }
-
-      const glowBlob = heroRef.current?.querySelector(".glow-blob")
-      if (glowBlob) {
-        gsap.to(glowBlob, {
-          scale: 1.2,
-          rotation: 180,
-          duration: 8,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        })
-      }
-    }, heroRef)
-    return () => ctx?.revert()
-  }, [])
-
-  const handleDotClick = (index: number) => {
-    setActiveIndex(index)
+  const handleColorChange = (index: number) => {
+    setActiveColor(index)
   }
 
-  const currentSlide = HERO_SLIDES[activeIndex]
+  const activeColorway = COLORWAYS[activeColor]
 
   return (
     <section
       ref={heroRef}
-      className="relative overflow-hidden section-dark"
+      className="relative overflow-hidden section-primary diagonal-cut"
       style={{ minHeight: "100svh" }}
       aria-label="Prakriti EV — Hero"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ zIndex: 0 }}>
-        <div className="absolute inset-0" style={{ opacity: 0.08 }}>
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path className="grid-line" d="M 10 0 L 0 0 0 10" fill="none" stroke="#DC2626" strokeWidth="0.3" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(12)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="particle absolute rounded-full"
+              className="parallax-layer absolute rounded-full"
               style={{
-                width: `${3 + (i % 3) * 2}px`,
-                height: `${3 + (i % 3) * 2}px`,
-                left: `${5 + (i * 7) % 90}%`,
-                top: `${10 + (i * 11) % 80}%`,
-                background: `rgba(220, 38, 38, ${0.1 + (i % 3) * 0.05})`,
+                width: `${40 + i * 30}px`,
+                height: `${40 + i * 30}px`,
+                left: `${10 + (i * 13) % 80}%`,
+                top: `${15 + (i * 17) % 70}%`,
+                background: `rgba(31, 181, 168, ${0.03 + i * 0.01})`,
+                filter: "blur(60px)",
               }}
             />
           ))}
         </div>
 
         <div
-          className="glow-blob absolute rounded-full blur-[200px] opacity-5"
+          className="parallax-layer absolute rounded-full blur-[300px] opacity-10"
           style={{
-            width: "500px",
-            height: "500px",
-            background: "radial-gradient(circle, #DC2626 0%, transparent 70%)",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            width: "800px",
+            height: "800px",
+            background: "radial-gradient(circle, #7a1c22 0%, transparent 70%)",
+            top: "20%",
+            right: "-10%",
+            transform: "translate(50%, -50%)",
+          }}
+        />
+
+        <div
+          className="parallax-layer absolute rounded-full blur-[200px] opacity-5"
+          style={{
+            width: "600px",
+            height: "600px",
+            background: "radial-gradient(circle, #1fb5a8 0%, transparent 70%)",
+            bottom: "10%",
+            left: "5%",
+            transform: "translate(-50%, 50%)",
           }}
         />
       </div>
 
-      <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
-        style={{
-          zIndex: 5,
-          width: "500px",
-          height: "300px",
-          background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.2) 0%, transparent 70%)",
-          filter: "blur(80px)",
-        }}
-        aria-hidden="true"
-      />
+      <div className="relative z-10 flex flex-col min-h-[100svh]">
+        <nav className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4" aria-label="Main navigation">
+          <a href="/" className="flex items-center gap-2 flex-shrink-0" aria-label="Prakriti EV home">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="2.5" />
+              <path d="M16 8v8M8 16h8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+            <span className="display-sm text-cream" style={{ letterSpacing: "-0.01em" }}>PRAKRITI</span>
+            <span className="label-xs text-ink px-2 py-0.5 rounded-full" style={{ background: "var(--color-cream)" }}>EV</span>
+          </a>
 
-      <div className="relative z-10 flex items-end justify-center min-h-[calc(100svh-80px)] px-4">
-        <div className="relative w-full max-w-5xl">
-          {HERO_SLIDES.map((slide, i) => (
-            <div
-              key={slide.id}
-              ref={(el) => { imageRefs.current[i] = el }}
-              className="absolute inset-0 flex items-end justify-center"
-              style={{
-                opacity: 0,
-                transition: "opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              }}
-              aria-hidden={i !== activeIndex}
-            >
-              <div
-                className="relative w-[85%] max-w-[600px]"
-                style={{
-                  filter: `drop-shadow(0 0 80px ${currentSlide.color}80) drop-shadow(0 40px 60px rgba(0,0,0,0.5))`,
-                }}
-              >
-                <img
-                  src={slide.image}
-                  alt={`${slide.title} ${slide.subtitle}`}
-                  className="w-full h-auto object-contain"
-                  loading={i === 0 ? "eager" : "lazy"}
-                  style={{
-                    transformOrigin: "center bottom",
-                    transition: "transform 4.5s linear",
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-wrap items-center justify-center gap-3 pointer-events-none z-20" aria-hidden="true">
-        {currentSlide.specs.map((spec, i) => (
-          <div
-            key={spec.label}
-            ref={(el) => { badgeRefs.current[i] = el }}
-            className="glass badge badge-white px-4 py-2"
-            style={{
-              opacity: 0,
-              transform: "translateY(30px)",
-            }}
-          >
-            <div className="text-white font-medium text-sm">{spec.value}</div>
-            <div className="text-neutral-400 text-xs font-mono tracking-wider uppercase mt-0.5">{spec.label}</div>
+          <div className="hidden lg:flex items-center gap-6">
+            <a href="#models" className="text-sm font-medium text-cream/80 hover:text-cream transition-colors">Products</a>
+            <a href="#technology" className="text-sm font-medium text-cream/80 hover:text-cream transition-colors">Technology</a>
+            <a href="#manufacturing" className="text-sm font-medium text-cream/80 hover:text-cream transition-colors">Manufacturing</a>
+            <a href="#dealership" className="text-sm font-medium text-cream/80 hover:text-cream transition-colors">Dealership</a>
+            <a href="#service" className="text-sm font-medium text-cream/80 hover:text-cream transition-colors">Service</a>
           </div>
-        ))}
-      </div>
 
-      <div className="relative z-20 container flex flex-col justify-center min-h-[100svh] px-4">
-        <div className="max-w-2xl">
-          {HERO_SLIDES.map((slide, i) => (
-            <div
-              key={slide.id}
-              ref={(el) => { textRefs.current[i] = el }}
-              className="absolute inset-0 transition-all duration-800"
-              style={{
-                opacity: i === activeIndex ? 1 : 0,
-                transform: i === activeIndex ? "translateY(0)" : "translateY(20px)",
-                pointerEvents: i === activeIndex ? "auto" : "none",
-              }}
+          <div className="flex items-center gap-3">
+            <a href="#dealership" className="hidden sm:inline-flex nav-pill">Book Test Ride</a>
+            <button
+              className="lg:hidden btn btn-icon"
+              aria-label="Open menu"
+              aria-expanded="false"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <span className="block w-8 h-0.5" style={{ background: slide.color }} />
-                <span className="label-xs" style={{ color: slide.color }}> {slide.subtitle.toUpperCase()} </span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+          <div className="container w-full max-w-[1440px]">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+              <div className="max-w-xl">
+                <div className="badge badge-cream mb-6" style={{ letterSpacing: "0.08em" }}>
+                  Now rolling out across India
+                </div>
+
+                <h1 className="display-5xl text-cream mb-6" style={{ letterSpacing: "-0.02em", lineHeight: 1.02 }}>
+                  Ride Further.<br />
+                  <span className="text-gradient-accent">Charge Less.</span>
+                </h1>
+
+                <p className="body-base text-cream/70 mb-8 max-w-lg" style={{ lineHeight: 1.7 }}>
+                  The Glider is built for the everyday commute — light in the city, steady on the highway, and cheap to keep charged.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a href="#models" className="btn btn-primary" style={{ minWidth: "220px" }}>
+                    Explore the Glider
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                  <a href="#dealership" className="btn btn-secondary" style={{ minWidth: "220px" }}>
+                    Find a dealership
+                  </a>
+                </div>
               </div>
 
-              <h1 className="display-2xl text-white mb-6 leading-[0.95]" style={{ letterSpacing: "-0.03em" }}>
-                {slide.title.split(" ").map((word, wi) => (
-                  <span key={wi} className="block" style={{ color: wi === slide.title.split(" ").length - 1 ? slide.color : "white" }}>
-                    {word}
-                    {wi < slide.title.split(" ").length - 1 ? " " : ""}
-                  </span>
-                ))}
-              </h1>
-
-              <p className="body-base text-neutral-400 mb-8 max-w-lg" style={{ lineHeight: 1.7 }}>
-                Smooth. Silent. Stylish. — The future of urban mobility.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={onTestRide}
-                  className="btn btn-primary group relative overflow-hidden"
-                  style={{ fontSize: "15px", padding: "16px 32px", minWidth: "200px" }}
+              <div className="relative" aria-hidden="true">
+                <div
+                  ref={watermarkRef}
+                  className="watermark-text absolute -top-1/2 -left-1/2 -z-10 select-none"
+                  style={{ transform: "translate(-50%, -50%)" }}
                 >
-                  <span className="relative z-10">Book a Test Ride</span>
-                  <span className="absolute inset-0 bg-white/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                </button>
-                <a href="#models" className="btn btn-secondary group relative overflow-hidden" style={{ fontSize: "15px", padding: "16px 32px", minWidth: "200px" }}>
-                  <span className="relative z-10">Explore Lineup</span>
-                  <span className="absolute inset-0 bg-white/5 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-                </a>
+                  GLIDER
+                </div>
+
+                <div
+                  ref={productRef}
+                  className="relative w-full aspect-[4/3] sm:aspect-[5/4] lg:aspect-square max-w-[600px] mx-auto"
+                  style={{
+                    filter: "drop-shadow(0 0 120px rgba(31, 181, 168, 0.4)) drop-shadow(0 60px 80px rgba(0,0,0,0.5))",
+                  }}
+                >
+                  <img
+                    src={activeColorway.image}
+                    alt={`Prakriti EV ${activeColorway.name}`}
+                    className="w-full h-full object-contain"
+                    loading="eager"
+                  />
+                </div>
+
+                <div className="flex items-center justify-center gap-3 mt-8" role="radiogroup" aria-label="Color options">
+                  {COLORWAYS.map((cw, i) => (
+                    <button
+                      key={cw.name}
+                      onClick={() => handleColorChange(i)}
+                      role="radio"
+                      aria-checked={i === activeColor}
+                      aria-label={`${cw.name} colorway`}
+                      className="color-swatch"
+                      style={{
+                        background: cw.color,
+                        boxShadow: i === activeColor ? `0 0 0 4px ${cw.color}40, 0 8px 32px ${cw.color}30` : "none",
+                      }}
+                    >
+                      {i === activeColor && (
+                        <svg className="w-6 h-6 text-ink absolute" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                <p className="label-xs text-center mt-4 text-cream/50">
+                  {activeColorway.name} · Select colorway above
+                </p>
               </div>
             </div>
-          ))}
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 mt-12" role="tablist" aria-label="Hero slides">
-            {HERO_SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => handleDotClick(i)}
-                role="tab"
-                aria-selected={i === activeIndex}
-                aria-label={`Go to slide ${i + 1}: ${HERO_SLIDES[i].title}`}
-                className="relative w-2 h-2 rounded-full transition-all duration-300 flex items-center justify-center"
-                style={{
-                  background: i === activeIndex ? currentSlide.color : "rgba(255,255,255,0.3)",
-                  transform: i === activeIndex ? "scale(1.4)" : "scale(1)",
-                  boxShadow: i === activeIndex ? `0 0 20px ${currentSlide.color}` : "none",
-                }}
-              >
-                <span className="absolute inset-0 rounded-full bg-white/20 opacity-0 transition-opacity" />
-              </button>
-            ))}
           </div>
-        </div>
+        </main>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20" aria-hidden="true">
-        <span className="label-xs text-neutral-500">SCROLL</span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-neutral-500" style={{ animation: "bounce-slow 2.5s ease-in-out infinite" }}>
-          <path d="M4 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <div className="absolute bottom-0 left-0 right-0 z-20" aria-hidden="true">
+        <svg className="w-full h-16 sm:h-24" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path
+            d="M0 100 L100 0 L100 100 Z"
+            fill="var(--color-bg-secondary)"
+          />
         </svg>
       </div>
 
       <style>{`
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(8px); }
-        }
         @media (prefers-reduced-motion: reduce) {
-          .particle, .grid-line, .glow-blob { animation: none !important; }
+          .parallax-layer { transform: none !important; }
+        }
+        @media (max-width: 820px) {
+          .watermark-text { font-size: clamp(80px, 20vw, 140px); }
         }
       `}</style>
     </section>
