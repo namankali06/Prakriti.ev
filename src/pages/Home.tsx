@@ -2,7 +2,6 @@ import { useOutletContext } from "react-router-dom"
 import type { LayoutContextType } from "../components/Layout"
 import Hero from "../components/Hero"
 import Products from "../components/Products"
-import ProductCarousel from "../components/ProductCarousel"
 import ColorConfigurator from "../components/ColorConfigurator"
 import WhyPrakriti from "../components/WhyPrakriti"
 import Technology from "../components/Technology"
@@ -20,9 +19,7 @@ export default function Home() {
     <>
       {/* 01 — Hero */}
       <Hero onTestRide={openTestRide} />
-      {/* 02 — Products 3D Carousel */}
-      <ProductCarousel />
-      {/* 03/04 — Products Showcase */}
+      {/* 02/03 — Products Showcase */}
       <Products />
       {/* 05 — Colour / Variant Experience */}
       <ColorConfigurator />
